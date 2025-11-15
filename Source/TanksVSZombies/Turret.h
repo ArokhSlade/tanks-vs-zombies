@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Turret.generated.h"
 
+class ATank;
+
 UCLASS()
 class TANKSVSZOMBIES_API ATurret : public AActor
 {
@@ -27,6 +29,9 @@ protected:
 	// turn rate in degrees/second for the turret.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
 	float YawSpeed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret")
+	ATank* Tank;
 
 private:
 	// Helpful debug tool - which way is the turret facing?

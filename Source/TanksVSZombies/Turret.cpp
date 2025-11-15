@@ -24,6 +24,8 @@ ATurret::ATurret()
 	TurretDirection->SetHiddenInGame(false);
 	TurretDirection->bIsEditorOnly = false;
 	TurretDirection->SetVisibility(true);
+
+	Tank = Cast<ATank>(GetParentActor());
 }
 
 // Called when the game starts or when spawned
@@ -45,35 +47,34 @@ void ATurret::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	check(TurretDirection);
-	if (ATank* Tank = Cast<ATank>(GetParentActor()))
+	check(Tank);
+	
+	if (APlayerController* PC = Cast<APlayerController>(Tank->GetController()))
 	{
-		if (APlayerController* PC = Cast<APlayerController>(Tank->GetController()))
+		FVector2D ScreenSpaceAimLocation{};
+		if (PC->GetMousePosition(ScreenSpaceAimLocation.X, ScreenSpaceAimLocation.Y))
 		{
-			FVector2D ScreenSpaceAimLocation{};
-			if (PC->GetMousePosition(ScreenSpaceAimLocation.X, ScreenSpaceAimLocation.Y))
+			FVector2D ScreenSpaceTurretLocation = FVector2D::ZeroVector;
+			UGameplayStatics::ProjectWorldToScreen(PC, TurretDirection->GetComponentLocation(), ScreenSpaceTurretLocation);
+
+			auto ScreenToWorld2D = FMatrix2x2(0.f, 1.f, -1.f, 0.f);
+			FVector2D AimLocation = ScreenToWorld2D.TransformPoint(ScreenSpaceAimLocation);
+			FVector2D TurretLocation = ScreenToWorld2D.TransformPoint(ScreenSpaceTurretLocation);
+
+			float DesiredYaw = 0.f;
+
+			if (UTankStatics::FindLookAtAngle2D(TurretLocation, AimLocation, DesiredYaw))
 			{
-				FVector2D ScreenSpaceTurretLocation = FVector2D::ZeroVector;
-				UGameplayStatics::ProjectWorldToScreen(PC, TurretDirection->GetComponentLocation(), ScreenSpaceTurretLocation);
-
-				auto ScreenToWorld2D = FMatrix2x2(0.f, 1.f, -1.f, 0.f);
-				FVector2D AimLocation = ScreenToWorld2D.TransformPoint(ScreenSpaceAimLocation);
-				FVector2D TurretLocation = ScreenToWorld2D.TransformPoint(ScreenSpaceTurretLocation);
-
-				float DesiredYaw = 0.f;
-
-				if (UTankStatics::FindLookAtAngle2D(TurretLocation, AimLocation, DesiredYaw))
+				FRotator CurrentRotation = TurretDirection->GetComponentRotation();
+				const float DeltaYaw = UTankStatics::FindDeltaAngleDegrees(CurrentRotation.Yaw, DesiredYaw);
+				if (const float MaxDeltaYawThisFrame = YawSpeed * DeltaSeconds; MaxDeltaYawThisFrame >= FMath::Abs(DeltaYaw))
 				{
-					FRotator CurrentRotation = TurretDirection->GetComponentRotation();
-					const float DeltaYaw = UTankStatics::FindDeltaAngleDegrees(CurrentRotation.Yaw, DesiredYaw);
-					if (const float MaxDeltaYawThisFrame = YawSpeed * DeltaSeconds; MaxDeltaYawThisFrame >= FMath::Abs(DeltaYaw))
-					{
-						CurrentRotation.Yaw += DeltaYaw;
-					} else
-					{
-						CurrentRotation.Yaw += FMath::Sign(DeltaYaw) * MaxDeltaYawThisFrame;
-					}
-					TurretDirection->SetWorldRotation(CurrentRotation);
+					CurrentRotation.Yaw += DeltaYaw;
+				} else
+				{
+					CurrentRotation.Yaw += FMath::Sign(DeltaYaw) * MaxDeltaYawThisFrame;
 				}
+				TurretDirection->SetWorldRotation(CurrentRotation);
 			}
 		}
 	}
