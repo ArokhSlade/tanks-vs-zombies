@@ -7,6 +7,7 @@
 #include "Turret.generated.h"
 
 class ATank;
+class AMissile;
 
 UCLASS()
 class TANKSVSZOMBIES_API ATurret : public AActor
@@ -32,6 +33,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret")
 	ATank* Tank;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	// TSubclassOf<AProjectileBase> Projectile;
+	TSubclassOf<AMissile> Projectile;
 
 private:
 	// Helpful debug tool - which way is the turret facing?

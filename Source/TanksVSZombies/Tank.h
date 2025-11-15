@@ -52,6 +52,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Tank")
+	const FTankInput& GetCurrentInput() const {return TankInput;};
 private:
 	void MoveX(float AxisValue);
 	void MoveY(float AxisValue);

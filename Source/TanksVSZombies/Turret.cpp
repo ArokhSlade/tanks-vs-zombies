@@ -2,6 +2,7 @@
 
 
 #include "Turret.h"
+#include "Missile.h"
 #include "PaperSpriteComponent.h"
 #include "Tank.h"
 #include "TankStatics.h"
@@ -76,6 +77,24 @@ void ATurret::Tick(float DeltaSeconds)
 					TurretDirection->SetWorldRotation(CurrentRotation);
 				}
 			}
-		}		
+
+			// Handle Input
+			const FTankInput& CurrentInput = Tank->GetCurrentInput();
+			if (CurrentInput.bShootPrimary && Projectile)
+			{
+				if (UWorld* World = GetWorld())
+				{
+					UE_LOG(LogTemp, Warning, TEXT("FIRE!"));
+					if (AMissile* NewProjectile = Cast<AMissile>(World->SpawnActor(Projectile)))
+					{
+						FVector Loc = TurretSprite->GetSocketLocation("Muzzle");
+						FRotator Rot = TurretDirection->GetComponentRotation();
+						NewProjectile->SetActorLocation(Loc);
+						NewProjectile->SetActorRotation(Rot);
+					}
+					//ShootPrimaryReadyTime
+				}
+			}
+		}
 	}
 }
