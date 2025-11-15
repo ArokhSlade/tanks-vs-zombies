@@ -25,6 +25,17 @@ void FTankInput::MoveY(float AxisValue)
 {
 	RawMovementInput.Y += AxisValue;
 }
+
+void FTankInput::ShootPrimary(bool bPressed)
+{
+	bShootPrimary = bPressed;
+}
+
+void FTankInput::ShootSecondary(bool bPressed)
+{
+	bShootPrimary = bPressed;
+}
+
 // Sets default values
 ATank::ATank()
 {
@@ -144,6 +155,10 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	InputComponent->BindAxis(TEXT("MoveX"), this, &ATank::MoveX);
 	InputComponent->BindAxis(TEXT("MoveY"), this, &ATank::MoveY);
+	InputComponent->BindAction(TEXT("ShootPrimary"), IE_Pressed, this, &ATank::ShootPrimaryPressed);
+	InputComponent->BindAction(TEXT("ShootPrimary"), IE_Released, this, &ATank::ShootPrimaryReleased);
+	InputComponent->BindAction(TEXT("ShootSecondary"), IE_Pressed, this, &ATank::ShootSecondaryPressed);
+	InputComponent->BindAction(TEXT("ShootSecondary"), IE_Released, this, &ATank::ShootSecondaryReleased);
 }
 
 void ATank::MoveX(float AxisValue)
@@ -154,5 +169,25 @@ void ATank::MoveX(float AxisValue)
 void ATank::MoveY(float AxisValue)
 {
 	TankInput.MoveY(AxisValue);
+}
+
+void ATank::ShootPrimaryPressed()
+{
+	TankInput.ShootPrimary(true);
+}
+
+void ATank::ShootPrimaryReleased()
+{
+	TankInput.ShootPrimary(false);
+}
+
+void ATank::ShootSecondaryPressed()
+{
+	TankInput.ShootSecondary(true);
+}
+
+void ATank::ShootSecondaryReleased()
+{
+	TankInput.ShootSecondary(false);
 }
 

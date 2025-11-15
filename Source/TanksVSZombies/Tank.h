@@ -18,9 +18,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank Input")
 	FVector2D MovementInput;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank Input")
+	uint32 bShootPrimary : 1;
+	uint32 bShootSecondary : 1;
+
 	void Sanitize();
 	void MoveX(float AxisValue);
 	void MoveY(float AxisValue);
+	void ShootPrimary(bool bPressed);
+	void ShootSecondary(bool bPressed);
 
 private:
 	// Private because it's internal, raw data. Game code should never see this.
@@ -49,6 +55,10 @@ public:
 private:
 	void MoveX(float AxisValue);
 	void MoveY(float AxisValue);
+	void ShootPrimaryPressed();
+	void ShootPrimaryReleased();
+	void ShootSecondaryPressed();
+	void ShootSecondaryReleased();
 private:
 	// Helpful debug tool - which way is the tank facing?
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank", meta = (AllowPrivateAccess = "true"))
