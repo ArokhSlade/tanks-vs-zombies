@@ -46,4 +46,10 @@ private:
 	// Sprite for the turret
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret", meta = (AllowPrivateAccess = "true"))
 	class UPaperSpriteComponent* TurretSprite;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret", meta = (AllowPrivateAccess = "true"))
+	float ShootPrimaryCooldown;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Turret", meta = (AllowPrivateAccess = "true"))
+	float ShootPrimaryReadyTime;
 };

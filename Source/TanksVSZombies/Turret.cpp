@@ -25,6 +25,8 @@ ATurret::ATurret()
 	TurretDirection->SetHiddenInGame(false);
 	TurretDirection->bIsEditorOnly = false;
 	TurretDirection->SetVisibility(true);
+
+	ShootPrimaryCooldown = 0.4f;
 }
 
 // Called when the game starts or when spawned
@@ -80,7 +82,7 @@ void ATurret::Tick(float DeltaSeconds)
 
 			// Handle Input
 			const FTankInput& CurrentInput = Tank->GetCurrentInput();
-			if (CurrentInput.bShootPrimary && Projectile)
+			if (CurrentInput.bShootPrimary && Projectile != nullptr)
 			{
 				if (UWorld* World = GetWorld())
 				{
@@ -92,7 +94,7 @@ void ATurret::Tick(float DeltaSeconds)
 						NewProjectile->SetActorLocation(Loc);
 						NewProjectile->SetActorRotation(Rot);
 					}
-					//ShootPrimaryReadyTime
+					//ShootPrimaryReadyTime = CurrentTime + ShootPrimaryCooldown;
 				}
 			}
 		}
