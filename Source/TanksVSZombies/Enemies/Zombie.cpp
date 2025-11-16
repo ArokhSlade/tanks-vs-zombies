@@ -2,6 +2,7 @@
 
 
 #include "Zombie.h"
+#include "Tank.h"
 
 // Sets default values
 AZombie::AZombie()
@@ -41,5 +42,21 @@ void AZombie::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AZombie::SetTarget(AActor* Target)
+{
+	TargetActor = Target;
+	TargetTank = Cast<ATank>(Target);
+}
+
+AActor* AZombie::GetTarget()
+{
+	return TargetActor;
+}
+
+ATank* AZombie::GetTargetAsTank()
+{
+	return TargetTank;
 }
 

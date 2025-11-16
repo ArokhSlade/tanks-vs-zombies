@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Zombie.generated.h"
 
+class ATank;
+
 UCLASS()
 class TANKSVSZOMBIES_API AZombie : public APawn
 {
@@ -25,9 +27,29 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// Set this zombie's target. The base version of this will handle updating TargetActor and TargetTank.
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void SetTarget(AActor* Target);
+	
+	// Return the target Actor. Returning nullptr indicates no target.
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	AActor* GetTarget();
+
+	// Return the target Actor as a Tank, if possible. Returning nullptr indicates no target, or that the target is not a Tank.
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	ATank* GetTargetAsTank();
+	
+private:
+	/* The actor we're targeting. Will be nullptr if there is no target. */
+	UPROPERTY(VisibleInstanceOnly, Category="AI")
+	AActor* TargetActor;
+
+	/* The actor we're tareting, cast to a Tank and cached. Will be nullptr if no target or if the target actor is not a tank. */
+	ATank* TargetTank;
 	
 protected:
-	/** Camera effet, if any, to play when the player is hit by this Zombie. */
+	/** Camera effect, if any, to play when the player is hit by this Zombie. */
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCameraShakeBase> HitShake;
 
