@@ -13,5 +13,15 @@ UCLASS()
 class TANKSVSZOMBIES_API AZombieBrains : public AAIController
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	virtual void Tick(float DeltaSeconds) override;
+
+	virtual void OnPossess(APawn* InPawn) override;
+
+	virtual void OnUnPossess() override;
+
+protected:
+	AZombie* PawnAsZombie; 
 };

@@ -40,6 +40,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	ATank* GetTargetAsTank();
 	
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	bool ZombieAIShouldAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void AddAttackInput();
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void AddRotationInput(float DeltaYawDesired);
+
 private:
 	/* The actor we're targeting. Will be nullptr if there is no target. */
 	UPROPERTY(VisibleInstanceOnly, Category="AI")
