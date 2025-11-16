@@ -19,5 +19,8 @@ public class TanksVSZombies : ModuleRules
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+		
+		//https://stackoverflow.com/questions/72379796/how-to-change-include-default-file-path-for-sub-folders
+		PublicIncludePaths.Add(ModuleDirectory);
 	}
 }
