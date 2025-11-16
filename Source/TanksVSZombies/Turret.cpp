@@ -40,6 +40,8 @@ void ATurret::BeginPlay()
 	AddTickPrerequisiteActor(GetParentActor());
 	Tank = Cast<ATank>(GetParentActor());
 	ensure(Tank);
+	
+	ShootPrimaryReadyTime = GetWorld()->GetTimeSeconds();
 }
 
 // Called every frame
@@ -82,7 +84,8 @@ void ATurret::Tick(float DeltaSeconds)
 
 			// Handle Input
 			const FTankInput& CurrentInput = Tank->GetCurrentInput();
-			if (CurrentInput.bShootPrimary && Projectile != nullptr)
+			auto CurrentTime = GetWorld()->GetTimeSeconds();
+			if (CurrentInput.bShootPrimary && Projectile != nullptr && CurrentTime >= ShootPrimaryReadyTime)
 			{
 				if (UWorld* World = GetWorld())
 				{
@@ -94,7 +97,7 @@ void ATurret::Tick(float DeltaSeconds)
 						NewProjectile->SetActorLocation(Loc);
 						NewProjectile->SetActorRotation(Rot);
 					}
-					//ShootPrimaryReadyTime = CurrentTime + ShootPrimaryCooldown;
+					ShootPrimaryReadyTime = CurrentTime + ShootPrimaryCooldown;
 				}
 			}
 		}
