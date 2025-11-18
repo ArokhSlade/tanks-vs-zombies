@@ -60,6 +60,26 @@ ATank* AZombie::GetTargetAsTank()
 	return TargetTank;
 }
 
+void AZombie::ZombieAI_Implementation(float DeltaSeconds)
+{
+	// The zombie always moves unless attacking. If moving, it moes between WalkSpeed and RunSpeed.
+	//FVector DesiredMovement = GetAttackInput() ? FVector::ZeroVector : (FMath::GetMappedRangeValueClamped(FVector2D(0.f, 1.f),FVector2D(WalkSpeed, RunSpeed),GetPendingMovementInputVector().X)) * DeltaSeconds * GetActorForwardVector(); 
+	const FVector DesiredMovement = GetAttackInput() ? FVector::ZeroVector :
+	FMath::GetMappedRangeValueClamped(FVector2D(0.f, 1.f), FVector2D(WalkSpeed, RunSpeed),
+		GetPendingMovementInputVector().Length()) * DeltaSeconds * GetActorForwardVector();
+	const FVector OriginalLocation = GetActorLocation();
+	const FVector DesiredLocation = OriginalLocation + DesiredMovement;
+	const float MaxYawThisFrame = YawSpeed * DeltaSeconds;
+	const FRotator DesiredRotation = GetActorRotation() + FRotator(0.f, FMath::Clamp(GetRotationInput(), -MaxYawThisFrame, MaxYawThisFrame), 0.f);
+
+	SetActorLocationAndRotation(DesiredLocation, DesiredRotation.Quaternion(), true);
+	const FVector DistanceWalked = GetActorLocation() - OriginalLocation;
+	if (!DistanceWalked.IsNearlyZero())
+	{
+		ZombieWalk(DeltaSeconds, DistanceWalked);
+	} 
+}
+
 bool AZombie::ZombieAIShouldAttack_Implementation()
 {
 	if (AActor* Target = GetTarget())

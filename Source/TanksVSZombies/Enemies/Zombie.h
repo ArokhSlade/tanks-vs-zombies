@@ -39,14 +39,23 @@ public:
 	// Return the target Actor as a Tank, if possible. Returning nullptr indicates no target, or that the target is not a Tank.
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	ATank* GetTargetAsTank();
+
+	// Zombies will call this on Tick.
+	UFUNCTION(BlueprintNativeEvent, Category = "AI")
+	void ZombieAI(float DeltaSeconds);
 	
 	UFUNCTION(BlueprintNativeEvent, Category = "AI")
 	bool ZombieAIShouldAttack();
 
+	// This can be used to animate walking.
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void ZombieWalk(float DeltaSeconds, FVector DistanceWalkedThisFrame);
+
+
 	//~
 	//~ New Zombie Input
 	//~
-	
+
 	/** Add rotation equal to the yaw (in degrees) provided. */
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "AddInput"))
 	void AddRotationInput(float DeltaYawDesired);
@@ -62,7 +71,7 @@ public:
 	/** Press the attack button. The pawn will know what to do with this. No arguments because it's a boolean ...*/
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "AddInput"))
 	void AddAttackInput();
-	
+
 	/** Get the status of the attack button. */
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
 	bool GetAttackInput();
