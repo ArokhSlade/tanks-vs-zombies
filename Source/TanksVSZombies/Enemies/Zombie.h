@@ -53,11 +53,11 @@ public:
 
 	/** Get rotation input. Returns pre-clear value. */
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
-	void GetRotationInput();
+	float GetRotationInput();
 
 	/** Get (and clear) rotation input. Returns pre-clear value. */
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
-	void ConsumeRotationInput();
+	float ConsumeRotationInput();
 
 	/** Press the attack button. The pawn will know what to do with this. No arguments because it's a boolean ...*/
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "AddInput"))
@@ -65,11 +65,11 @@ public:
 	
 	/** Get the status of the attack button. */
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
-	void GetAttackInput();
+	bool GetAttackInput();
 
 	/** Get (and clear) the status of the attack button. */
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
-	void ConsumeAttackInput();
+	bool ConsumeAttackInput();
 
 private:
 	/* The actor we're targeting. Will be nullptr if there is no target. */

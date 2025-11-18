@@ -81,3 +81,36 @@ bool AZombie::ZombieAIShouldAttack_Implementation()
 	return false;
 }
 
+void AZombie::AddRotationInput(float DeltaYawDesired)
+{
+	YawInput += DeltaYawDesired;
+}
+
+float AZombie::GetRotationInput()
+{
+	return YawInput;
+}
+
+float AZombie::ConsumeRotationInput()
+{
+	float RetVal = YawInput;	
+	YawInput = 0.f;
+	return RetVal;
+}
+
+void AZombie::AddAttackInput()
+{
+	bAttackInput = true;
+}
+
+bool AZombie::GetAttackInput()
+{
+	return bAttackInput;
+}
+
+bool AZombie::ConsumeAttackInput()
+{
+	bool bRetVal = bAttackInput;
+	bAttackInput = false;
+	return bRetVal;
+}
