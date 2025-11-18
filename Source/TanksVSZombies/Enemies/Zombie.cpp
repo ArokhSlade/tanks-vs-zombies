@@ -60,3 +60,24 @@ ATank* AZombie::GetTargetAsTank()
 	return TargetTank;
 }
 
+bool AZombie::ZombieAIShouldAttack_Implementation()
+{
+	if (AActor* Target = GetTarget())
+	{
+		// Attack our target if we're in range (distance and angle). FOr now, we'll use our unmodified attack distance
+		FVector OurLocation = GetActorLocation();
+		FVector DirectionToTarget = (Target->GetActorLocation() - OurLocation).GetSafeNormal();
+		float DotToTarget = FVector::DotProduct(DirectionToTarget,GetActorForwardVector());
+		if (DotToTarget >= FMath::Cos(FMath::DegreesToRadians(AttackAngle)))
+		{
+			float DistSqXY = FVector::DistSquaredXY(OurLocation, Target->GetActorLocation());
+			if (DistSqXY < AttackDistance * AttackDistance)
+			{
+				// Note that attacking cooldown isn't checked. We don't want this kind of zombie to move while it's waiting for an attack
+				return true;
+			}
+		}
+	}
+	return false;
+}
+

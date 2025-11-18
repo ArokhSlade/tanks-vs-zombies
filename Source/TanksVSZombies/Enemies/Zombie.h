@@ -40,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	ATank* GetTargetAsTank();
 	
-	UFUNCTION(BlueprintCallable, Category = "AI")
+	UFUNCTION(BlueprintNativeEvent, Category = "AI")
 	bool ZombieAIShouldAttack();
 
 	UFUNCTION(BlueprintCallable, Category = "AI")
