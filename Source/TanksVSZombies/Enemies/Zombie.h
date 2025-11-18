@@ -43,11 +43,33 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "AI")
 	bool ZombieAIShouldAttack();
 
-	UFUNCTION(BlueprintCallable, Category = "AI")
-	void AddAttackInput();
-
-	UFUNCTION(BlueprintCallable, Category = "AI")
+	//~
+	//~ New Zombie Input
+	//~
+	
+	/** Add rotation equal to the yaw (in degrees) provided. */
+	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "AddInput"))
 	void AddRotationInput(float DeltaYawDesired);
+
+	/** Get rotation input. Returns pre-clear value. */
+	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
+	void GetRotationInput();
+
+	/** Get (and clear) rotation input. Returns pre-clear value. */
+	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
+	void ConsumeRotationInput();
+
+	/** Press the attack button. The pawn will know what to do with this. No arguments because it's a boolean ...*/
+	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "AddInput"))
+	void AddAttackInput();
+	
+	/** Get the status of the attack button. */
+	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
+	void GetAttackInput();
+
+	/** Get (and clear) the status of the attack button. */
+	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
+	void ConsumeAttackInput();
 
 private:
 	/* The actor we're targeting. Will be nullptr if there is no target. */
@@ -102,4 +124,11 @@ protected:
 	/** Game time, in seconds, when the Zombie will be allowed to attack again. */
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadWrite, Category = "Zombie")
 	float AttackAvailableTime;
+
+private:
+	// Current rotation input;
+	float YawInput;
+
+	// Current attack button status.
+	uint32 bAttackInput : 1;
 };
