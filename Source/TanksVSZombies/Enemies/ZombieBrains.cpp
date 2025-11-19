@@ -1,9 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "TanksVSZombies.h"
-#include "Zombie.h"
 #include "ZombieBrains.h"
+#include "Zombie.h"
+#include "TanksVSZombies/TanksVSZombies.h"
 
 
 void AZombieBrains::Tick(float DeltaSeconds)

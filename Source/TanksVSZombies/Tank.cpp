@@ -161,6 +161,11 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAction(TEXT("ShootSecondary"), IE_Released, this, &ATank::ShootSecondaryReleased);
 }
 
+void ATank::DamageHealth(float damage)
+{
+	//TODO
+}
+
 void ATank::MoveX(float AxisValue)
 {
 	TankInput.MoveX(AxisValue);

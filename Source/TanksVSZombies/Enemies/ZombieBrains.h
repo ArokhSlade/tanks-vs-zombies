@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "ZombieBrains.generated.h"
 
+class AZombie;
+
 /**
  * 
  */

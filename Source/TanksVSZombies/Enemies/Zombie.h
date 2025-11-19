@@ -51,6 +51,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
 	void ZombieWalk(float DeltaSeconds, FVector DistanceWalkedThisFrame);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void ZombieAttack(float DeltaSeconds);
 
 	//~
 	//~ New Zombie Input
