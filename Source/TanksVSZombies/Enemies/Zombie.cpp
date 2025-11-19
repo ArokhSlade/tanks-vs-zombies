@@ -67,6 +67,25 @@ ATank* AZombie::GetTargetAsTank()
 
 void AZombie::ZombieAI_Implementation(float DeltaSeconds)
 {
+	// Look for target. We might not do this every single frame, but for now it's OK.
+	// TODO: Make this use a list of registered targets so we can handle multiplayer or add decoys.
+	// TODO: sweep view cone for player.
+	// -> check if player left of right edge, and right of left edge, and within sight distance 
+	// if so set target to player
+	// should happen aiming towards player.
+		
+	AActor* TargetCandidate = UGameplayStatics::GetPlayerPawn(this, 0);
+	const float DistSqXY = FVector::DistSquaredXY(TargetCandidate->GetActorLocation(), GetActorLocation());
+	SetTarget(nullptr);
+	if (DistSqXY <= (SightDistance * SightDistance))
+	{
+		FVector DirectionToTarget = (TargetCandidate->GetActorLocation() - GetActorLocation()).GetSafeNormal2D();
+		if (FVector::DotProduct(DirectionToTarget, GetActorForwardVector()) >= FMath::Cos(FMath::DegreesToRadians(SightAngle)))
+		{
+			SetTarget(TargetCandidate);
+		}
+	}
+	
 	// The zombie always moves unless attacking. If moving, it moves between WalkSpeed and RunSpeed.
 	const FVector DesiredMovement = GetAttackInput() ? FVector::ZeroVector
 	: (FMath::GetMappedRangeValueClamped(FVector2D(0.f, 1.f),FVector2D(WalkSpeed, RunSpeed),GetPendingMovementInputVector().X)) * DeltaSeconds * GetActorForwardVector();
@@ -97,12 +116,12 @@ void AZombie::ZombieAI_Implementation(float DeltaSeconds)
 			ZombieAttack(DeltaSeconds);
 			if (DotToTarget >= FMath::Cos(FMath::DegreesToRadians(AttackAngle)))
 			{
-				const float DistSqXY = FVector::DistSquaredXY(Target->GetActorLocation(), OurLocation);
+				//const float DistSqXY = FVector::DistSquaredXY(Target->GetActorLocation(), OurLocation);
 				if (DistSqXY <= (AttackDistance * AttackDistance))
 				{
 					if (ATank* TankTarget = GetTargetAsTank())
 					{
-						TankTarget->DamageHealth(10.f);
+						TankTarget->DamageHealth(10);
 						if (APlayerController* PC = Cast<APlayerController>(TankTarget->GetController()))
 						{
 							PC->ClientStartCameraShake(HitShake, 1.f);
@@ -113,26 +132,6 @@ void AZombie::ZombieAI_Implementation(float DeltaSeconds)
 						SetTarget(nullptr);
 					}
 				}
-			}
-		}
-	}
-	else
-	{
-		// Look for target. We might not do this every single frame, but for now it's OK.
-		// TODO: Make this use a list of registered targets so we can handle multiplayer or add decoys.
-		// TODO: sweep view cone for player.
-		// -> check if player left of right edge, and right of left edge, and within sight distance 
-		// if so set target to player
-		// should happen aiming towards player.
-		
-		Target = UGameplayStatics::GetPlayerPawn(this, 0);
-		const float DistSqXY = FVector::DistSquaredXY(Target->GetActorLocation(), GetActorLocation());
-		if (DistSqXY <= (SightDistance * SightDistance))
-		{
-			FVector DirectionToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal2D();
-			if (FVector::DotProduct(DirectionToTarget, GetActorForwardVector()) >= FMath::Cos(FMath::DegreesToRadians(SightAngle)))
-			{
-				SetTarget(Target);
 			}
 		}
 	}

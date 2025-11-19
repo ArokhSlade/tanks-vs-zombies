@@ -57,7 +57,7 @@ public:
 	const FTankInput& GetCurrentInput() const {return TankInput;};
 
 	UFUNCTION(BlueprintCallable, Category = "Tank")
-	void DamageHealth(float damage);
+	void DamageHealth(int damage);
 	
 private:
 	void MoveX(float AxisValue);
