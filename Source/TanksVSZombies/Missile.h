@@ -22,12 +22,21 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DelteSeconds) override;
-
+	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float Speed;
 
+	/** no component for collision, check in radius every tick*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	float Radius;
+
+	/** what can be hit*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	FName MovementCollisionProfile;
+
+protected:
 	/* ... projectile explodes. The base version just destroys the projectile. */
 	UFUNCTION(BlueprintNativeEvent, Category = "Projectile")
-	void Explode();
+	void OnExplode();
 };

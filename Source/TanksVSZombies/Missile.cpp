@@ -18,7 +18,7 @@ void AMissile::BeginPlay()
 	Super::BeginPlay();
 
 	FTimerHandle DummyTimerHandle;
-	GetWorldTimerManager().SetTimer(DummyTimerHandle, this, &AMissile::Explode, 1.0f);
+	GetWorldTimerManager().SetTimer(DummyTimerHandle, this, &AMissile::OnExplode, 1.0f);
 }
 
 // Called every frame
@@ -31,7 +31,7 @@ void AMissile::Tick(float DelteSeconds)
 	SetActorLocation(Loc);
 }
 
-void AMissile::Explode_Implementation()
+void AMissile::OnExplode_Implementation()
 {
 	Destroy();
 }

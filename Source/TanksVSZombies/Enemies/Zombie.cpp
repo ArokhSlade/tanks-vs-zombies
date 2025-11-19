@@ -27,7 +27,6 @@ AZombie::AZombie()
 void AZombie::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -115,6 +114,34 @@ void AZombie::ZombieAI_Implementation(float DeltaSeconds)
 				}
 			}
 		}
+	}
+	else
+	{
+		//LookForTarget
+		// sweep view cone for player.
+		// -> check if player left of right edge, and right of left edge, and within sight distance 
+		// if so set target to player
+		// should happen aiming towards player.
+		
+		/*
+		//UE_LOG(LogTemp, Warning, TEXT("Zombie looking for a target"));
+		// Look for a target.
+		AActor* Target = UGameplayStatics::GetPlayerPawn(this, 0);
+
+		if(Target)
+		{
+			float DistSqXY = FVector::DistSquaredXY(Target->GetActorLocation(), GetActorLocation());
+			const float SightDistance = GetSightDistance();
+			if (DistSqXY <= (SightDistance * SightDistance))
+			{
+				FVector DirectionToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal2D();
+				if (FVector::DotProduct(DirectionToTarget, GetActorForwardVector()) >= FMath::Cos(FMath::DegreesToRadians(GetSightAngle())))
+				{
+					SetTarget(Target);
+				}
+			}
+		}
+		*/
 	}
 }
 
