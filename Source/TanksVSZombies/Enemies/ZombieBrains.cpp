@@ -2,7 +2,7 @@
 
 #include "ZombieBrains.h"
 #include "Zombie.h"
-#include "TanksVSZombies/TanksVSZombies.h"
+//#include "TanksVSZombies/TanksVSZombies.h"
 
 
 void AZombieBrains::Tick(float DeltaSeconds)

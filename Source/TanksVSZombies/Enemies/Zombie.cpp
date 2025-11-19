@@ -36,6 +36,10 @@ void AZombie::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	ZombieAI(DeltaTime);
 
+	// Clear out leftover movement.
+	ConsumeMovementInputVector();
+	ConsumeRotationInput();
+	ConsumeAttackInput();
 }
 
 // Called to bind functionality to input
@@ -69,6 +73,8 @@ void AZombie::ZombieAI_Implementation(float DeltaSeconds)
 	const FVector OriginalLocation = GetActorLocation();
 	const FVector DesiredLocation = OriginalLocation + DesiredMovement;
 	const float MaxYawThisFrame = YawSpeed * DeltaSeconds;
+
+	//TODO angle to target
 	const FRotator DesiredRotation = GetActorRotation() + FRotator(0.f, FMath::Clamp(GetRotationInput(), -MaxYawThisFrame, MaxYawThisFrame), 0.f);
 
 	SetActorLocationAndRotation(DesiredLocation, DesiredRotation.Quaternion(), true);
