@@ -144,7 +144,8 @@ bool AZombie::ZombieAIShouldAttack_Implementation()
 		// Attack our target if we're in range (distance and angle). FOr now, we'll use our unmodified attack distance
 		FVector OurLocation = GetActorLocation();
 		FVector DirectionToTarget = (Target->GetActorLocation() - OurLocation).GetSafeNormal();
-		float DotToTarget = FVector::DotProduct(DirectionToTarget,GetActorForwardVector());
+		auto forward_vector = GetActorForwardVector();
+		float DotToTarget = FVector::DotProduct(DirectionToTarget,forward_vector);
 		if (DotToTarget >= FMath::Cos(FMath::DegreesToRadians(AttackAngle)))
 		{
 			float DistSqXY = FVector::DistSquaredXY(OurLocation, Target->GetActorLocation());
