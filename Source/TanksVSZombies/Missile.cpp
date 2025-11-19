@@ -2,8 +2,7 @@
 
 
 #include "Missile.h"
-
-#include "Enemies/Zombie.h"
+#include "DamageInterface.h"
 
 // Sets default values
 AMissile::AMissile()
