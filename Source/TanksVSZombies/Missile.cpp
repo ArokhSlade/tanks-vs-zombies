@@ -3,6 +3,8 @@
 
 #include "Missile.h"
 
+#include "Enemies/Zombie.h"
+
 // Sets default values
 AMissile::AMissile()
 {
@@ -11,6 +13,7 @@ AMissile::AMissile()
 
 	Speed = 200.f;
 	Radius = 20.f;
+	DirectDamage = 5;
 }
 
 // Called when the game starts or when spawned
@@ -39,6 +42,10 @@ void AMissile::Tick(float DeltaSeconds)
 			, FQuat::Identity, MovementCollisionProfile, CollisionShape))
 		{
 			SetActorLocation(OutHit.Location);
+			if (IDamageInterface* DamageActor = Cast<IDamageInterface>(OutHit.GetActor()))
+			{
+				DamageActor->ReceiveDamage(DirectDamage);
+			}
 			Explode();
 		}
 		else
