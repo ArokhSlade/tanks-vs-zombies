@@ -193,6 +193,11 @@ bool AZombie::ConsumeAttackInput()
 	return bRetVal;
 }
 
+float AZombie::GetSightAngle()
+{
+	return SightAngle;
+}
+
 void AZombie::ReceiveDamage(int32 IncomingDamage)
 {
 	if (IncomingDamage >= 0)

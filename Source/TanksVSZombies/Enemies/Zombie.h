@@ -85,6 +85,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
 	bool ConsumeAttackInput();
 
+	UFUNCTION(BlueprintCallable, Category = "Zombie", meta = (Keywords = "Getter, Sight, Vision, Cone"))
+	float GetSightAngle();
+
 	//~ Begin IDamageInterface
 	void ReceiveDamage(int32 IncomingDamage) override;
 	
