@@ -87,6 +87,7 @@ public:
 
 	//~ Begin IDamageInterface
 	void ReceiveDamage(int32 IncomingDamage) override;
+	
 	int32 GetHealthRemaining() override;
 	//~ End IDamageInterface
 
