@@ -21,7 +21,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DelteSeconds) override;
+	virtual void Tick(float DeltaSeconds) override;
 	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
@@ -35,8 +35,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	FName MovementCollisionProfile;
 
-protected:
+protected:	
+	void Explode();
+	FTimerHandle ExplodeTimerHandle;
+	
 	/* ... projectile explodes. The base version just destroys the projectile. */
 	UFUNCTION(BlueprintNativeEvent, Category = "Projectile")
 	void OnExplode();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Projectile")
+	void SomeEvent();
 };
