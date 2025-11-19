@@ -12,7 +12,7 @@ AZombie::AZombie()
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	Health = 100.f;
+	Health = 10;
 	SightDistance = 500.f;
 	SightAngle = 60.f;
 	YawSpeed = 90.f;
@@ -198,4 +198,21 @@ bool AZombie::ConsumeAttackInput()
 	bool bRetVal = bAttackInput;
 	bAttackInput = false;
 	return bRetVal;
+}
+
+void AZombie::ReceiveDamage(int32 IncomingDamage)
+{
+	if (IncomingDamage >= 0)
+	{
+		Health -= IncomingDamage;
+		if (Health <= 0)
+		{
+			Destroy();
+		}
+	}
+}
+
+int32 AZombie::GetHealthRemaining()
+{
+	return Health;
 }

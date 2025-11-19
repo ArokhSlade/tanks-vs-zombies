@@ -4,12 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "DamageInterface.h"
+
 #include "Zombie.generated.h"
+
 
 class ATank;
 
 UCLASS()
-class TANKSVSZOMBIES_API AZombie : public APawn
+class TANKSVSZOMBIES_API AZombie : public APawn, public IDamageInterface
 {
 	GENERATED_BODY()
 
@@ -82,6 +85,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pawn|Input", meta = (Keywords = "ConsumeInput"))
 	bool ConsumeAttackInput();
 
+	//~ Begin IDamageInterface
+	void ReceiveDamage(int32 IncomingDamage) override;
+	int32 GetHealthRemaining() override;
+	//~ End IDamageInterface
+
 private:
 	/* The actor we're targeting. Will be nullptr if there is no target. */
 	UPROPERTY(VisibleInstanceOnly, Category="AI")
@@ -97,7 +105,7 @@ protected:
 
 	/** Current health value. Might be fun to have different values for different attack types, e.g. fire.*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Zombie", meta = (ClampMin = "0.0"))
-	float Health;
+	int32 Health;
 	
 	/** Sight distance (when no target is present)*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Zombie", meta = (ClampMin = "0.0"))
