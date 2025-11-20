@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "DamageInterface.h"
+#include "Tank.h"
 
 #include "Zombie.generated.h"
 
@@ -89,8 +90,7 @@ public:
 	float GetSightAngle();
 
 	//~ Begin IDamageInterface
-	void ReceiveDamage(int32 IncomingDamage) override;
-	
+	void ReceiveDamage(int32 IncomingDamage, EDamageType DamageType) override;	
 	int32 GetHealthRemaining() override;
 	//~ End IDamageInterface
 

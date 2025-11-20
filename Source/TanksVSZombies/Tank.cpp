@@ -6,6 +6,7 @@
 #include "TankStatics.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 
@@ -50,6 +51,11 @@ ATank::ATank()
 	TankDirection = CreateDefaultSubobject<UArrowComponent>(TEXT("TankDirection"));
 	TankDirection->SetupAttachment(RootComponent);
 
+
+	TankBody = CreateDefaultSubobject<UBoxComponent>(TEXT("TankBody"));
+	TankBody->SetupAttachment(TankDirection);
+	TankBody->SetBoxExtent(FVector(40.f, 40.f, 100.f));
+	
 	TankSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("TankSprite"));
 	TankSprite->SetupAttachment(TankDirection);
 
@@ -69,10 +75,18 @@ ATank::ATank()
 	CameraComponent->OrthoWidth = 1024.0f;
 	CameraComponent->AspectRatio = 3.0f / 4.0f;
 	CameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
-	// CameraComponent->SetWorldRotation(FRotator(-90.0f, 0.0f, 0.0f));
+	CameraComponent->SetWorldRotation(FRotator(-90.0f, -90.0f, 0.0f));
 
     ChildTurret = CreateDefaultSubobject<UChildActorComponent>(TEXT("ChildTurret"));
 	ChildTurret->SetupAttachment(TankDirection);
+
+	MoveSpeed = 100.f;
+	MoveAccel = 200.f;
+	YawSpeed = 180.f;
+
+	Health = 100;
+
+	CrushCollisionProfile = TEXT("Tank:Crush");
 }
 
 // Called when the game starts or when spawned

@@ -198,7 +198,7 @@ float AZombie::GetSightAngle()
 	return SightAngle;
 }
 
-void AZombie::ReceiveDamage(int32 IncomingDamage)
+void AZombie::ReceiveDamage(int32 IncomingDamage, EDamageType DamageType)
 {
 	if (IncomingDamage >= 0)
 	{

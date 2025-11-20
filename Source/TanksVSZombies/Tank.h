@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DamageInterface.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
@@ -34,7 +35,7 @@ private:
 };
 
 UCLASS()
-class TANKSVSZOMBIES_API ATank : public APawn
+class TANKSVSZOMBIES_API ATank : public APawn, public IDamageInterface
 {
 	GENERATED_BODY()
 
@@ -56,8 +57,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tank")
 	FORCEINLINE const FTankInput& GetCurrentInput() const {return TankInput;};
 
+	//~ Begin IDamageInterface
+	void ReceiveDamage(int32 IncomingDamage, EDamageType DamageType) override;	
+	int32 GetHealthRemaining() override;
+	//~ End IDamageInterface
+	
 	UFUNCTION(BlueprintCallable, Category = "Tank")
 	void DamageHealth(int damage);
+
+	// when Tank die
+	UFUNCTION(BlueprintNativeEvent, Category = "Tank")
+	void TankDie(EDamageType DamageType);
 	
 private:
 	void MoveX(float AxisValue);
@@ -70,6 +80,10 @@ private:
 	// Helpful debug tool - which way is the tank facing?
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank", meta = (AllowPrivateAccess = "true"))
 	class UArrowComponent* TankDirection;
+
+	// Collision body for the tank.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* TankBody;
 	
 	// Sprite for the turret
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank", meta = (AllowPrivateAccess = "true"))
@@ -94,4 +108,17 @@ protected:
 	// Maximum movement rate (units/seconds) of the tank.
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Tank", meta = (ClampMin = "0.0"))
 	float MoveSpeed;
+
+	// Acceleration in units/second^2
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tank", meta = (ClampMin = "0.0"))
+	float MoveAccel;
+
+	// Hitpoints
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tank|Health", meta = (ClampMin = "0.0"))
+	int Health;
+
+	// Collision Profile for running over zombies
+	UPROPERTY(EditAnywhere, BluepritnReadOnly, Category = "Tank|Combat", meta = (Keywords = "Collision, Carnage"))
+	FName CrushCollisionProfile;
+	
 };
