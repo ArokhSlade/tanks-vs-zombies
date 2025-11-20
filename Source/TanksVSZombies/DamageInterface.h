@@ -6,6 +6,15 @@
 #include "UObject/Interface.h"
 #include "DamageInterface.generated.h"
 
+UENUM(BlueprintType)
+enum class EDamageType : uint8
+{
+	Unknown,
+	HitWithMissle,
+	Crushed,
+	ZombieSlap
+};
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UDamageInterface : public UInterface
@@ -22,6 +31,6 @@ class TANKSVSZOMBIES_API IDamageInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void ReceiveDamage(int32 IncomingDamage) =0;
+	virtual void ReceiveDamage(int32 IncomingDamage, EDamageType DamageType) =0;
 	virtual int32 GetHealthRemaining() = 0;
 };
