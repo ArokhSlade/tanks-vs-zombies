@@ -9,7 +9,6 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
-
 void FTankInput::Sanitize()
 {
 	MovementInput = RawMovementInput;//.ClampAxes(-1.0f, 1.0f);
@@ -103,7 +102,8 @@ void ATank::Tick(float DeltaTime)
 
 	TankInput.Sanitize();
 
-	// Move the tank!
+	// Respond to controls if we're not dead!
+	if (GetHealthRemaining() >= 0)
 	{
 		FVector DesiredMovementDirection = FVector(TankInput.MovementInput.X, TankInput.MovementInput.Y, 0.f);
 		if (!DesiredMovementDirection.IsNearlyZero())
@@ -153,9 +153,33 @@ void ATank::Tick(float DeltaTime)
 			// Move the tank
 			{
 				FVector MovementDirection = TankDirection->GetForwardVector() * (bReverse ? -1.f : 1.f);
+				FVector StartPos = GetActorLocation();
 				FVector Pos = GetActorLocation();
 				Pos.X += MovementDirection.X * MoveSpeed * DeltaTime;
 				Pos.Y += MovementDirection.Y * MoveSpeed * DeltaTime;
+
+				if (UWorld* World = GetWorld())
+				{
+					TArray<FHitResult> HitResults;
+					FVector BoxSize = TankBody->GetScaledBoxExtent();
+					FCollisionShape CollisionShape;
+					CollisionShape.SetBox(FVector3f{BoxSize});
+					World->SweepMultiByProfile(HitResults, StartPos, Pos, TankBody->GetComponentRotation().Quaternion(),
+						CrushCollisionProfile, CollisionShape);
+					for (const FHitResult& HitResult : HitResults)
+					{
+						if (IDamageInterface* DamageTarget = Cast<IDamageInterface>(HitResult.GetActor()))
+						{
+							// Getting crushed by a tank is pretty final. Damage is always enough to smoosh the raspberry jelly out of a zombie.
+							int32 TargetHealth = DamageTarget->GetHealthRemaining();
+							if (TargetHealth >= 0)
+							{
+								DamageTarget->ReceiveDamage(TargetHealth, EDamageType::Crushed);
+							}
+							
+						}
+					}
+				}
 				SetActorLocation(Pos);
 			}
 		}
