@@ -31,25 +31,30 @@ void AMissile::Tick(float DeltaSeconds)
 
 	const FVector OurLocation = GetActorLocation();
 	FVector DesiredEndLocation = OurLocation + ((DeltaSeconds * Speed) * GetTransform().GetUnitAxis(EAxis::X));
-
-	if (UWorld* World = GetWorld())
+	FHitResult HitResult;
+	FCollisionShape CollisionShape;
+	// Set the Radius to 0 temporarily if you want a mortar that flies over stuff without colliding.
+	if (Radius > 0.f)
 	{
-		FHitResult OutHit;
-		FCollisionShape CollisionShape;
-		CollisionShape.SetCapsule(Radius, 200.f);
-		if (World->SweepSingleByProfile(OutHit, OurLocation, DesiredEndLocation
-			, FQuat::Identity, MovementCollisionProfile, CollisionShape))
+		if (UWorld* World = GetWorld())
 		{
-			SetActorLocation(OutHit.Location);
-			if (IDamageInterface* DamageActor = Cast<IDamageInterface>(OutHit.GetActor()))
+			CollisionShape.SetCapsule(Radius, 200.f);
+			if (World->SweepSingleByProfile(HitResult, OurLocation, DesiredEndLocation
+				, FQuat::Identity, MovementCollisionProfile, CollisionShape))
 			{
-				DamageActor->ReceiveDamage(DirectDamage, EDamageType::HitWithMissle);
+				SetActorLocation(HitResult.Location);
+				if (IDamageInterface* DamageActor = Cast<IDamageInterface>(HitResult.GetActor()))
+				{
+					// could make these arguments into class parameters so child types could customize.
+					// for scalability, could take a struct instead of individual params.
+					DamageActor->ReceiveDamage(DirectDamage, EDamageType::HitWithMissle);
+				}
+				Explode();
 			}
-			Explode();
-		}
-		else
-		{
-			SetActorLocation(DesiredEndLocation);
+			else
+			{
+				SetActorLocation(DesiredEndLocation);
+			}
 		}
 	}
 }
