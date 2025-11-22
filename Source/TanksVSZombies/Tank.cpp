@@ -102,7 +102,7 @@ void ATank::Tick(float DeltaTime)
 
 	TankInput.Sanitize();
 
-	// Respond to controls if we're not dead!
+	// Respond to controls if we're not dead.
 	if (GetHealthRemaining() >= 0)
 	{
 		FVector DesiredMovementDirection = FVector(TankInput.MovementInput.X, TankInput.MovementInput.Y, 0.f);
@@ -199,9 +199,32 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAction(TEXT("ShootSecondary"), IE_Released, this, &ATank::ShootSecondaryReleased);
 }
 
-void ATank::DamageHealth(int damage)
+void ATank::ReceiveDamage(int32 IncomingDamage, EDamageType DamageType)
 {
-	//TODO
+	if (IncomingDamage >= Health)
+	{
+		if (Health >= 0)
+		{
+			Health = -1;
+			TankDie(DamageType);
+		}
+		return;
+	}
+	Health -= IncomingDamage;
+}
+
+int32 ATank::GetHealthRemaining()
+{
+	return Health;
+}
+
+void ATank::TankDie_Implementation(EDamageType DamageType)
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		// TODO: Manage extra lives?
+		PC->RestartLevel();
+	}
 }
 
 void ATank::MoveX(float AxisValue)

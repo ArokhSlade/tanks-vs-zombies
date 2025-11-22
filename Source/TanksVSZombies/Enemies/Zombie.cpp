@@ -121,7 +121,7 @@ void AZombie::ZombieAI_Implementation(float DeltaSeconds)
 				{
 					if (ATank* TankTarget = GetTargetAsTank())
 					{
-						TankTarget->DamageHealth(10);
+						TankTarget->ReceiveDamage(10, EDamageType::ZombieSlap);
 						if (APlayerController* PC = Cast<APlayerController>(TankTarget->GetController()))
 						{
 							PC->ClientStartCameraShake(HitShake, 1.f);

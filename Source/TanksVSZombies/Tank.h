@@ -62,9 +62,6 @@ public:
 	int32 GetHealthRemaining() override;
 	//~ End IDamageInterface
 	
-	UFUNCTION(BlueprintCallable, Category = "Tank")
-	void DamageHealth(int damage);
-
 	// when Tank die
 	UFUNCTION(BlueprintNativeEvent, Category = "Tank")
 	void TankDie(EDamageType DamageType);
