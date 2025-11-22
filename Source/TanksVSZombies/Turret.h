@@ -26,6 +26,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
+	FORCEINLINE UArrowComponent* GetTurretDirection() { return TurretDirection; }
+
+	/** The name of the socket at the muzzle - used for spawning missiles. */
+	static const FName MuzzleSocketName;
+	
 protected:
 	// turn rate in degrees/second for the turret.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
@@ -35,8 +40,8 @@ protected:
 	ATank* Tank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
-	// TSubclassOf<AProjectileBase> Projectile;
-	TSubclassOf<AMissile> Projectile;
+	//TArray<TSubclassOf<AMissile>> Projectiles;
+	TArray<TSubclassOf<AActor>> Projectiles;
 
 private:
 	// Helpful debug tool - which way is the turret facing?

@@ -2,12 +2,14 @@
 
 
 #include "Turret.h"
-#include "Missile.h"
+//#include "Missile.h"
 #include "PaperSpriteComponent.h"
 #include "Tank.h"
 #include "TankStatics.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
+
+const FName ATurret::MuzzleSocketName = TEXT("Muzzle");  
 
 // Sets default values
 ATurret::ATurret()
@@ -85,18 +87,22 @@ void ATurret::Tick(float DeltaSeconds)
 			// Handle Input
 			const FTankInput& CurrentInput = Tank->GetCurrentInput();
 			auto CurrentTime = GetWorld()->GetTimeSeconds();
-			if (CurrentInput.bShootPrimary && Projectile != nullptr && CurrentTime >= ShootPrimaryReadyTime)
+			if (CurrentInput.bShootPrimary && !Projectiles.IsEmpty() && CurrentTime >= ShootPrimaryReadyTime)
 			{
 				if (UWorld* World = GetWorld())
 				{
-					UE_LOG(LogTemp, Warning, TEXT("FIRE!"));
-					if (AMissile* NewProjectile = Cast<AMissile>(World->SpawnActor(Projectile)))
+					FVector Loc = TurretSprite->GetSocketLocation(MuzzleSocketName);
+					FRotator Rot = TurretDirection->GetComponentRotation();
+
+					for (TSubclassOf<AActor> Projectile : Projectiles)
 					{
-						FVector Loc = TurretSprite->GetSocketLocation("Muzzle");
-						FRotator Rot = TurretDirection->GetComponentRotation();
-						NewProjectile->SetActorLocation(Loc);
-						NewProjectile->SetActorRotation(Rot);
+						if (AActor* NewProjectile = World->SpawnActor(Projectile))
+						{
+							NewProjectile->SetActorLocation(Loc);
+							NewProjectile->SetActorRotation(Rot);								
+						}
 					}
+					
 					ShootPrimaryReadyTime = CurrentTime + ShootPrimaryCooldown;
 				}
 			}
