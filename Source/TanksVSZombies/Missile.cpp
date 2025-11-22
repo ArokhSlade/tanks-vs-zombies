@@ -43,7 +43,7 @@ void AMissile::Tick(float DeltaSeconds)
 			SetActorLocation(OutHit.Location);
 			if (IDamageInterface* DamageActor = Cast<IDamageInterface>(OutHit.GetActor()))
 			{
-				DamageActor->ReceiveDamage(DirectDamage);
+				DamageActor->ReceiveDamage(DirectDamage, EDamageType::HitWithMissle);
 			}
 			Explode();
 		}

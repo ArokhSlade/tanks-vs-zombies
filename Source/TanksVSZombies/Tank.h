@@ -115,7 +115,7 @@ protected:
 	int Health;
 
 	// Collision Profile for running over zombies
-	UPROPERTY(EditAnywhere, BluepritnReadOnly, Category = "Tank|Combat", meta = (Keywords = "Collision, Carnage"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Tank|Combat", meta = (Keywords = "Collision, Carnage"))
 	FName CrushCollisionProfile;
 	
 };

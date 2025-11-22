@@ -21,4 +21,7 @@ public:
 	/** Finds the angle between two 2D points. */
 	UFUNCTION(BlueprintPure, Category = "Math|Rotator", meta = (Keywords = "rotation rotate"))
 	static bool FindLookAtAngle2D(const FVector2D& Start, const FVector2D& Target, float& Angle);
+
+	UFUNCTION(BlueprintCallable, Category = "Placement", meta = (Keywords = "spawning"))
+	static void PutInZPlane(AActor* Actor);
 };
