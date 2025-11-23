@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Spawner.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class TANKSVSZOMBIES_API ASpawner : public AActor
 {
@@ -30,6 +32,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	FName SpawnCollisionProfile;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* SpawnVolume;
 };

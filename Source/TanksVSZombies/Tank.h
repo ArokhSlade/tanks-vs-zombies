@@ -55,7 +55,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Tank")
-	FORCEINLINE const FTankInput& GetCurrentInput() const {return TankInput;};
+	FORCEINLINE FTankInput& GetCurrentInput() {return TankInput;};
 
 	//~ Begin IDamageInterface
 	void ReceiveDamage(int32 IncomingDamage, EDamageType DamageType) override;	

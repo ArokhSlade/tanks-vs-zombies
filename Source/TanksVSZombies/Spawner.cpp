@@ -12,6 +12,9 @@ ASpawner::ASpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickInterval = 2.f;
+	
+	SpawnVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnVolume"));
 	FVector BoxExtent = SpawnVolume->GetUnscaledBoxExtent();
 	BoxExtent.Z = 100.f;
 	SpawnVolume->SetBoxExtent(BoxExtent, false);

@@ -8,6 +8,7 @@
 
 class ATank;
 class AMissile;
+class UArrowComponent;
 
 UCLASS()
 class TANKSVSZOMBIES_API ATurret : public AActor
@@ -26,7 +27,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
-	FORCEINLINE UArrowComponent* GetTurretDirection() { return TurretDirection; }
+	UArrowComponent* GetTurretDirection() { return TurretDirection; }
 
 	/** The name of the socket at the muzzle - used for spawning missiles. */
 	static const FName MuzzleSocketName;
@@ -46,7 +47,7 @@ protected:
 private:
 	// Helpful debug tool - which way is the turret facing?
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret", meta = (AllowPrivateAccess = "true"))
-	class UArrowComponent* TurretDirection;
+	UArrowComponent* TurretDirection;
 
 	// Sprite for the turret
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret", meta = (AllowPrivateAccess = "true"))

@@ -30,3 +30,13 @@ bool UTankStatics::FindLookAtAngle2D(const FVector2D& Start, const FVector2D& Ta
 	}
 	return false;
 }
+
+void UTankStatics::PutInZPlane(AActor* Actor)
+{
+	if (Actor)
+	{
+		auto NewLocation = Actor->GetActorLocation();
+		NewLocation.Z = 1.f;
+		Actor->SetActorLocation(NewLocation);
+	}
+}
