@@ -6,6 +6,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "TankStatics.generated.h"
 
+class UPaperFlipbookComponent;
+class UPaperFlipbook;
 /**
  * 
  */
@@ -24,4 +26,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Placement", meta = (Keywords = "spawning"))
 	static void PutInZPlane(AActor* Actor);
+
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	static void PlayFlipBook(UPaperFlipbookComponent* Component, UPaperFlipbook* NewFlipbook, bool bLooping = false, float Playrate = 1.f);
 };

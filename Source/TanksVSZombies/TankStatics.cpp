@@ -2,6 +2,8 @@
 
 
 #include "TankStatics.h"
+#include "PaperFlipbook.h"
+#include "PaperFlipbookComponent.h"
 
 float UTankStatics::FindDeltaAngleDegrees(float A1, float A2)
 {
@@ -39,4 +41,13 @@ void UTankStatics::PutInZPlane(AActor* Actor)
 		NewLocation.Z = 1.f;
 		Actor->SetActorLocation(NewLocation);
 	}
+}
+
+void UTankStatics::PlayFlipBook(UPaperFlipbookComponent* Component, UPaperFlipbook* NewFlipbook, bool bLooping,
+	float Playrate)
+{
+	Component->SetFlipbook(NewFlipbook);
+	Component->SetLooping(bLooping);
+	Component->SetPlayRate(Playrate);
+	Component->Play();
 }
